@@ -1,0 +1,151 @@
+{
+    "experiment": {
+        "n_folds": 1,
+        "n_epochs": 30,
+        "pretrained": true,
+        "task": "6D",
+        "url": "swisscube_pretrained.pth",
+        "metrics": {
+            "target_metric": "valid_loss"
+        }
+    },
+    "RUNTIME": {
+        "NUM_WORKERS": 8
+    },
+    "data": {
+        "augment": true,
+        "bs_train": 8,
+        "bs_valid": 8,
+        "CONFIDENCE_TH": 0.3,
+        "TRAIN": "./problems/SwissCube/data/training.txt",
+        "VALID": "./problems/SwissCube/data/validation.txt",
+        "TEST": "./problems/SwissCube/data/testing.txt",
+        "MESH_DIR": "./problems/SwissCube/data/models/",
+        "BBOX_FILE": "./problems/SwissCube/data/swisscube_bbox.json",
+        "MESH_DIAMETERS": [
+            178.46
+        ],
+        "N_CLASS": 2,
+        "AUGMENTATION_SHIFT": 0.1,
+        "AUGMENTATION_SCALE": 0.1,
+        "AUGMENTATION_ROTATION": 180
+    },
+    "INPUT": {
+        "INTERNAL_WIDTH": 512,
+        "INTERNAL_HEIGHT": 512,
+        "INTERNAL_K": [
+            303.7865161198519,
+            0,
+            256,
+            0,
+            303.7865161198519,
+            256,
+            0,
+            0,
+            1
+        ],
+        "PIXEL_MEAN": [
+            0.485,
+            0.456,
+            0.406
+        ],
+        "PIXEL_STD": [
+            0.229,
+            0.224,
+            0.225
+        ],
+        "SIZE_DIVISIBLE": 32
+    },
+    "network": {
+        "class": "Widedepth",
+        "params": {
+            "name": "/cvlabdata2/home/javed/quantlab/problems/SwissCube/Widedepth/configs/swisscube.yaml"
+        },
+        "quantize": {
+            "first_layer": true,
+            "last_layer": true,
+            "routine": "layers_ste_inq",
+            "STE": {
+                "n_levels": 255,
+                "quant_start_epoch": 1
+            },
+            "INQB": {
+                "n_levels": 31,
+                "quant_init_method": "uniform-l2-opt",
+                "quant_strategy": "magnitude"
+            },
+            "INQF": {
+                "n_levels": 15,
+                "quant_init_method": "uniform-l2-opt",
+                "quant_strategy": "magnitude"
+            },
+            "INQH": {
+                "n_levels": 15,
+                "quant_init_method": "uniform-l2-opt",
+                "quant_strategy": "magnitude"
+            }
+        }
+    },
+    "training": {
+        "LOSS_WEIGHT_CLS": 0.01,
+        "LOSS_WEIGHT_REG": 0.1,
+        "POSITIVE_LAMBDA": 1.0,
+        "loss_function": {
+            "class": "CrossEntropyLoss",
+            "params": {}
+        },
+        "optimizer": {
+            "class": "SGD",
+            "params": {
+                "lr": 0.01,
+                "momentum": 0.9
+            }
+        },
+        "lr_scheduler": {
+            "class": "HandScheduler",
+            "params": {
+                "schedule": {
+                    "0": 1,
+                    "3": 0.1,
+                    "4": 0.01,
+                    "5": 1,
+                    "7": 0.1,
+                    "9": 1,
+                    "11": 0.1,
+                    "13": 1,
+                    "15": 0.1,
+                    "17": 1,
+                    "19": 0.1,
+                    "21": 1,
+                    "23": 0.1,
+                    "25": 1,
+                    "27": 0.1,
+                    "29": 1,
+                    "30": 0.1
+                }
+            },
+            "step_metric": "valid_metric"
+        },
+        "quantize": {
+            "routine": "layers_ste_inq_get_controllers",
+            "STE": {
+                "clear_optim_state_on_step": false
+            },
+            "INQ": {
+                "schedule": {
+                    "0": 0.2,
+                    "5": 0.4,
+                    "9": 0.6,
+                    "13": 0.8,
+                    "17": 0.9,
+                    "21": 0.95,
+                    "25": 0.9875,
+                    "29": 1
+                },
+                "clear_optim_state_on_step": true
+            }
+        }
+    }
+}
+
+
