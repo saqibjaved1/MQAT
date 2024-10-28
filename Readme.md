@@ -1,6 +1,4 @@
-# IMQ-6D: Informed Modular Quantization for 6D Pose Estimation
-
-
+# Modular Quantization-Aware Training for 6D Object Pose Estimation
 
 ## Installation
 In the following, I assume you have pulled the repository to your local machine at your home folder, which I will denote with `~`.
@@ -20,11 +18,11 @@ Pretrained model can be downloaded from [here](https://drive.google.com/drive/fo
 
 ## Running
 
-If you want to train the network with IMQ-6D, current codebase is only for 2 bit FPN. To run the Swisscube example, simply run `train.sh` or invoke the below command.
+If you want to train the network with MQAT, current codebase is only for 2 bit FPN. To run the Swisscube example, simply run `train.sh` or invoke the below command.
 ```
 $ CUDA_VISIBLE_DEVICES="0" python3 main.py --problem=SwissCube --topology=Widedepth
 ```
-You have to uncomment few lines `problems/Swisscube/Widedepth/quantize.py` to quantize other parts of the network. We will clean and provide the whole codebase once the paper is published.
+You have to uncomment few lines `problems/Swisscube/Widedepth/quantize.py` to quantize other parts of the network. We will clean and provide the whole codebase soon.
 Furthermore, `problems/Swisscube/Widedepth/config.json` must be edited and path of pretrained WDR model should be provided under `experiment/url`. Other parts of the config file are self explanatory.
 
 
